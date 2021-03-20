@@ -22,14 +22,13 @@ public:
     node* right;
 };
 
-void play_game(node*, queue<int>& qe);
+void play_game(node*, queue<string>& qe);
 node* read_game_tree();
 node* read_preorder(ifstream& fin);
 void write_preorder(ofstream& fout, node*);
 void write_game_tree(node*);
 void delete_game_tree(node*);
 
-// TODO: Add helper method templates here, such as read_preorder().
 
 /**
  * Handles showing the main menu/basic UI
@@ -49,7 +48,7 @@ int main() {
 		cout << "Please make your selection: ";
 		getline(cin, tmp);
 		choice = atoi(tmp.c_str());
-        queue<int> qe;
+        queue<string> qe;
 		switch (choice) {
 		    case 1:
     			play_game(root,qe);
@@ -81,6 +80,11 @@ node* read_game_tree() {
     fin.close();
     return root;
 }
+/**
+ * @param file stream of game tree file
+ * Reads in tree from game tree file
+ * @return returns root node of game tree
+ */
 node* read_preorder(ifstream& fin) {
     node* root = new node;
     string line;
@@ -98,20 +102,20 @@ node* read_preorder(ifstream& fin) {
     return root;
 }
 /**
+ *
  * Plays the game
- * @param root Root of the game tree
+ * @param root Root of the game tree & queue to keep track of questions asked
  */
 void play_game(node* root, queue<string>& qe) {
     if(root == nullptr) {
         cout << "something bad has happened" << endl;
         return;
     }
-    // TODO: Implement me.
     node* next = new node;
     if(root->left != nullptr && root->right != nullptr) {
         string line = root->data;
         line = line.substr(3);
-
+        qe.push(line);
         cout << line << endl;
         char choice;
         cin >> choice;
@@ -126,6 +130,7 @@ void play_game(node* root, queue<string>& qe) {
         //leaf
         string line = root->data;
         line = line.substr(3);
+        qe.push(line);
         cout << line << endl;
         char choice;
         cin >> choice;
@@ -135,10 +140,28 @@ void play_game(node* root, queue<string>& qe) {
         }
         else if(choice == 'n') {
             cout << "BOO! I don't know!" << endl;
+            char yesno;
+            cout << "Would you like to expand the game tree (y/n)?";
+            cin >> yesno;
+            if(yesno == 'y') {
+                cout << "I asked the following:" << endl;
+                while(!qe.empty()) {
+                    cout << qe.front() << endl;
+                    qe.push(qe.front());
+                    qe.pop();
+                }
+                cout << "Enter a new animal in the form of a question \n e.g., \'Is it a whale?\':" << endl;
+                string animal;
+                getline(cin, animal);
+                cout << "Now enter a question for which the answer is \'yes\' for your new\nanimal, and which does not contradict your previous answers:" << endl;
+                string question;
+                getline(cin, question);
+
+            }
             return;
         }
     }
-    play_game(next);
+    play_game(next,qe);
 }
 
 /**
