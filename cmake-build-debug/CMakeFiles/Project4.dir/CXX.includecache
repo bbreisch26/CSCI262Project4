@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Ben/Documents/School/CSCI262/Project4/main.cpp
+iostream
+-
+fstream
+-
+string
+-
+cstdlib
+-
+queue
+-
+
